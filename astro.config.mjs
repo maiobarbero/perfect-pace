@@ -6,7 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://astro.build/config
 export default defineConfig({
     site: "https://maiobarbero.github.io",
-    // base: "/perfect-pace",
+    base: "/perfect-pace",
     integrations: [react()],
     vite: {
         plugins: [tailwindcss()],
