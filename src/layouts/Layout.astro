@@ -9,9 +9,18 @@ import Navbar from "../components/Navbar.astro"
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
 		<meta name="generator" content={Astro.generator} />
 		<title>Perfect Pace</title>
+        <meta name="description" content="Create your race startegy and plan your running pace." />
+<meta name="keywords" content="running,marathin,half-marathon,pace,calculator,training,plan,strategy" />
+        <meta name="author" content="Matteo Maio Barbero" />
 	</head>
     <body class="prose max-w-none min-h-screen flex flex-col justify-between">
 <Navbar />

@@ -1,9 +1,19 @@
 ---
+import { Image } from 'astro:assets';
+import logo from "../assets/logo_no_bg.png"
 ---
 <div class="bg-neutral">
     <div class="max-w-7xl mx-auto navbar text-neutral-content">
   <div class="navbar-start">
-    <div class="dropdown">
+            <a class="text-xl text-neutral-content no-underline w-52" href="/"><Image src={logo} alt="PerfectPace logo"/></a>
+  </div>
+  <div class="navbar-end hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+                <li><a class="text-neutral-content" href="/">Create a plan</a></li>
+                <!-- <li><a class="text-neutral-content" href="/about">How it works</a></li> -->
+    </ul>
+  </div>
+        <div class="dropdown navbar-end lg:hidden">
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
       </div>
@@ -14,13 +24,5 @@
         <!-- <li><a>How it works</a></li> -->
       </ul>
     </div>
-            <a class="text-xl text-neutral-content no-underline" href="/">PerfectPace</a>
-  </div>
-  <div class="navbar-end hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
-                <li><a class="text-neutral-content" href="/">Create a plan</a></li>
-                <!-- <li><a class="text-neutral-content" href="/about">How it works</a></li> -->
-    </ul>
-  </div>
     </div>
 </div>
