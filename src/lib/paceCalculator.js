@@ -1,16 +1,16 @@
-export function calculateSplit(goal, distance, strategy) {
+export function calculateSplit(goal, distance, strategy, speedFactor = 1.02) {
     const time = stringToMinutes(goal);
     switch (strategy) {
         case "steady":
             return steadySplit(time, distance);
         case "negative-half":
-            return splitAndCalculate(2, distance, 1.02, time);
+            return splitAndCalculate(2, distance, speedFactor, time);
         case "negative-quarter":
-            return splitAndCalculate(4, distance, 1.02, time);
+            return splitAndCalculate(4, distance, speedFactor, time);
         case "rise":
-            return splitAndCalculate(Math.round(distance), distance, 1.02, time);
+            return splitAndCalculate(Math.round(distance), distance, speedFactor, time);
         case "crash":
-            return splitAndCalculate(Math.round(distance), distance, 1.05, time, true);
+            return splitAndCalculate(Math.round(distance), distance, speedFactor, time, true);
         default:
             return steadySplit(time, distance);
     }
