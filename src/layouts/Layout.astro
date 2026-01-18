@@ -16,24 +16,48 @@ import Navbar from "../components/Navbar.astro"
         <link rel="shortcut icon" href="/perfect-pace/favicon.ico" type="image/x-icon">
         <link rel="icon" href="/perfect-pace/favicon.ico" type="image/x-icon">
 
+        <link href="https://fonts.googleapis.com" rel="preconnect"/>
+        <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+
 		<meta name="generator" content={Astro.generator} />
 		<title>Perfect Pace</title>
         <meta name="description" content="Create your race startegy and plan your running pace." />
-<meta name="keywords" content="running,marathin,half-marathon,pace,calculator,training,plan,strategy" />
+        <meta name="keywords" content="running,marathin,half-marathon,pace,calculator,training,plan,strategy" />
         <meta name="author" content="Matteo Maio Barbero" />
+
+        <script is:inline>
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+              document.documentElement.classList.add('dark')
+            } else {
+              document.documentElement.classList.remove('dark')
+            }
+        </script>
 	</head>
-    <body class="prose max-w-none min-h-screen flex flex-col justify-between">
-<Navbar />
-		<slot />
-<Footer />
+    <body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 font-display transition-colors duration-300 min-h-screen flex flex-col">
+        <Navbar />
+        <main class="flex-grow container mx-auto px-4 pb-12 max-w-5xl space-y-8">
+		    <slot />
+        </main>
+        <Footer />
+
+        <div class="fixed bottom-4 right-4 no-print">
+            <button class="bg-surface-dark dark:bg-surface-light text-white dark:text-slate-900 p-3 rounded-full shadow-lg transition-transform hover:scale-110" id="theme-toggle" aria-label="Toggle Dark Mode">
+            <span class="material-icons-round dark:hidden">dark_mode</span>
+            <span class="material-icons-round hidden dark:block">light_mode</span>
+            </button>
+        </div>
+        <script is:inline>
+            document.getElementById('theme-toggle').addEventListener('click', () => {
+                if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.theme = 'light';
+                } else {
+                document.documentElement.classList.add('dark');
+                localStorage.theme = 'dark';
+                }
+            });
+        </script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
