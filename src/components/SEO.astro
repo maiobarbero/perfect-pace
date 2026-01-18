@@ -1,0 +1,80 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	url?: string | URL;
+    type?: string;
+}
+
+const {
+    title,
+    description = "Create your race strategy and plan your running pace.",
+    image = '/perfect-pace/og-image.svg',
+    url = Astro.url,
+    type = 'website'
+} = Astro.props;
+
+const siteTitle = "Perfect Pace";
+const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+
+const siteBase = Astro.site ? Astro.site : 'https://maiobarbero.github.io';
+const resolvedImage = new URL(image, siteBase).toString();
+const resolvedUrl = new URL(url, siteBase).toString();
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+
+<!-- Favicons -->
+<link rel="apple-touch-icon" sizes="180x180" href="/perfect-pace/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/perfect-pace/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/perfect-pace/favicon-16x16.png">
+<link rel="shortcut icon" href="/perfect-pace/favicon.ico" type="image/x-icon">
+<link rel="icon" href="/perfect-pace/favicon.ico" type="image/x-icon">
+
+<!-- Canonical URL -->
+<link rel="canonical" href={resolvedUrl} />
+
+<!-- Primary Meta Tags -->
+<title>{fullTitle}</title>
+<meta name="title" content={fullTitle} />
+<meta name="description" content={description} />
+<meta name="author" content="Matteo Maio Barbero" />
+<meta name="keywords" content="running, marathon, half-marathon, pace, calculator, training, plan, strategy, splits, wristband" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content={type} />
+<meta property="og:url" content={resolvedUrl} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={resolvedImage} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={resolvedUrl} />
+<meta property="twitter:title" content={fullTitle} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={resolvedImage} />
+
+<!-- JSON-LD -->
+<script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Perfect Pace",
+    "url": resolvedUrl,
+    "description": description,
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Any",
+    "author": {
+        "@type": "Person",
+        "name": "Matteo Maio Barbero"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+    }
+})} />
