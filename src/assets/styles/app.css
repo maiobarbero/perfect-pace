@@ -1,5 +1,53 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-@plugin "daisyui" {
-    themes: "fantasy --default"
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #22d3ee;
+  --color-secondary: #f472b6;
+  --color-background-light: #f8fafc;
+  --color-background-dark: #0f172a;
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #1e293b;
+  --color-input-dark: #020617;
+
+  --font-display: "Inter", "sans-serif";
+  --font-mono: "Roboto Mono", "monospace";
+
+  --shadow-neon-cyan: 0 0 10px rgba(34, 211, 238, 0.5), 0 0 20px rgba(34, 211, 238, 0.3);
+  --shadow-neon-pink: 0 0 10px rgba(244, 114, 182, 0.5), 0 0 20px rgba(244, 114, 182, 0.3);
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 1cm;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  #wristband-container {
+    border: 2px dashed #000;
+    box-shadow: none;
+    width: 19cm;
+    margin: 0 auto;
+    background-color: white !important;
+  }
+  #wristband-container * {
+    color: black !important;
+  }
 }

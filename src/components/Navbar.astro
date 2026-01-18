@@ -1,28 +1,16 @@
----
-import { Image } from 'astro:assets';
-import logo from "../assets/logo_no_bg.png"
----
-<div class="bg-neutral">
-    <div class="max-w-7xl mx-auto navbar text-neutral-content">
-  <div class="navbar-start">
-            <a class="text-xl text-neutral-content no-underline w-52" href="/"><Image src={logo} alt="PerfectPace logo"/></a>
-  </div>
-  <div class="navbar-end hidden lg:flex">
-    <ul class="menu menu-horizontal px-1">
-                <li><a class="text-neutral-content" href="/">Create a plan</a></li>
-                <!-- <li><a class="text-neutral-content" href="/about">How it works</a></li> -->
-    </ul>
-  </div>
-        <div class="dropdown navbar-end lg:hidden">
-      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
-      </div>
-      <ul
-        tabindex="0"
-        class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                    <li><a href="/">Create a plan</a></li>
-        <!-- <li><a>How it works</a></li> -->
-      </ul>
+<header class="w-full p-6 flex justify-between items-center no-print">
+    <div class="flex items-center gap-3 select-none">
+        <div class="relative w-10 h-10 flex items-center justify-center">
+            <span class="material-icons-round text-4xl text-primary drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]">timer</span>
+            <div class="absolute -right-1 top-0 w-2 h-2 bg-secondary rounded-full drop-shadow-[0_0_5px_rgba(244,114,182,1)]"></div>
+        </div>
+        <a href="/" class="flex flex-col leading-none font-black tracking-wider text-xl no-underline">
+            <span class="text-primary drop-shadow-[0_0_2px_rgba(34,211,238,0.6)]">PERFECT</span>
+            <span class="text-secondary drop-shadow-[0_0_2px_rgba(244,114,182,0.6)]">PACE</span>
+        </a>
     </div>
-    </div>
-</div>
+    <a class="flex items-center gap-2 text-primary hover:text-cyan-300 transition-colors text-sm font-medium" href="/">
+        <span class="material-icons-round text-lg">edit_note</span>
+        Create a new plan
+    </a>
+</header>
