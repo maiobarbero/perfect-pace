@@ -1,10 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Planner from '../components/Planner.jsx';
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+
+const title = "Race Strategy & Pace Planner";
+const description = "Create your race strategy and plan your running pace for marathons, half-marathons, and other distances. Visualize your splits and get a wristband printout.";
 ---
 
-<Layout>
+<Layout title={title} description={description}>
     <Planner client:load/>
 </Layout>

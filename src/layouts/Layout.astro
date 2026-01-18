@@ -2,30 +2,26 @@
 import "../assets/styles/app.css";
 import Footer from "../components/Footer.astro"
 import Navbar from "../components/Navbar.astro"
+import SEO from "../components/SEO.astro"
+
+interface Props {
+    title?: string;
+    description?: string;
+    image?: string;
+}
+
+const { title, description, image } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-
-        <link rel="apple-touch-icon" sizes="180x180" href="/perfect-pace/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="/perfect-pace/favicon-32x32.png">
-        <link rel="icon" type="image/png" sizes="16x16" href="/perfect-pace/favicon-16x16.png">
-        <link rel="shortcut icon" href="/perfect-pace/favicon.ico" type="image/x-icon">
-        <link rel="icon" href="/perfect-pace/favicon.ico" type="image/x-icon">
+        <SEO title={title} description={description} image={image} />
 
         <link href="https://fonts.googleapis.com" rel="preconnect"/>
         <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=Roboto+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
-
-		<meta name="generator" content={Astro.generator} />
-		<title>Perfect Pace</title>
-        <meta name="description" content="Create your race startegy and plan your running pace." />
-        <meta name="keywords" content="running,marathin,half-marathon,pace,calculator,training,plan,strategy" />
-        <meta name="author" content="Matteo Maio Barbero" />
 
         <script is:inline>
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
