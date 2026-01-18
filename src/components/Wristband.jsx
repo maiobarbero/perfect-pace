@@ -89,7 +89,7 @@ export default function Wristband({ splits }) {
         </button>
       </div>
 
-      <div className="bg-surface-light dark:bg-surface-dark p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner overflow-x-auto">
+      <div className="bg-surface-light dark:bg-surface-dark p-8 rounded-xl border border-slate-200 dark:border-slate-700 shadow-inner overflow-x-auto print:p-0 print:border-none print:shadow-none print:overflow-visible print:bg-transparent">
         <div
           className="bg-white text-black min-w-[750px] max-w-[800px] h-24 mx-auto border-2 border-dashed border-slate-400 relative flex items-center px-2 select-none"
           id="wristband-container"

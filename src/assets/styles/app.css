@@ -46,6 +46,7 @@
     width: 19cm;
     margin: 0 auto;
     background-color: white !important;
+    min-width: 0 !important;
   }
   #wristband-container * {
     color: black !important;
