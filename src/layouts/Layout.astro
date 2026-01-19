@@ -24,6 +24,25 @@ const { title, description, image } = Astro.props;
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
         <link rel="manifest" href="/perfect-pace/manifest.json" />
 
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMTDVWZGR4"></script>
+        <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-LMTDVWZGR4');
+
+            // Track PWA Installation
+            window.addEventListener('appinstalled', () => {
+                gtag('event', 'pwa_install', {
+                    'event_category': 'pwa',
+                    'event_label': 'install',
+                    'value': 1
+                });
+            });
+        </script>
+
         <script is:inline>
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
