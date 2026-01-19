@@ -1,0 +1,38 @@
+name: Bump Version
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Update SW Version
+        run: |
+          # Generate a version string based on current timestamp (e.g. v202310271200)
+          VERSION="v$(date +'%Y%m%d%H%M')"
+          echo "Bumping version to $VERSION"
+
+          # Replace the CACHE_NAME line in public/sw.js
+          # Matches: const CACHE_NAME = '...';
+          sed -i "s/const CACHE_NAME = '.*';/const CACHE_NAME = 'perfect-pace-$VERSION';/" public/sw.js
+
+          # Verify the change
+          grep "const CACHE_NAME =" public/sw.js
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add public/sw.js
+          # We need to capture the version again or just use a generic message if env var not persisted
+          # But we can just use the generic message or extract it.
+          # Simplest is to just say "bump service worker version"
+          git commit -m "chore: bump service worker version"
+          git push
