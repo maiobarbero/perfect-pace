@@ -32,70 +32,6 @@ export default function PaceTable({ splits }) {
     setShowDonation(true);
   };
 
-  const downloadTCX = () => {
-    // Generate TCX Workout XML
-    const header = `<?xml version="1.0" encoding="UTF-8"?>
-<TrainingCenterDatabase xmlns="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2 http://www.garmin.com/xmlschemas/TrainingCenterDatabasev2.xsd">
-  <Workouts>
-    <Workout Sport="Running">
-      <Name>PerfectPace Strategy</Name>
-      <Step xsi:type="Step_t">
-        <StepId>1</StepId>
-        <Name>Warm Up</Name>
-        <Duration xsi:type="Time_t">
-          <Seconds>0</Seconds>
-        </Duration>
-        <Intensity>Active</Intensity>
-        <Target xsi:type="None_t"/>
-      </Step>`;
-
-    // Create steps for each split
-    // Note: splits are cumulative distance. We need step distance.
-    // splits[0].km is 1. splits[1].km is 2. So step distance is usually 1km.
-    // However, the last split might be fractional (e.g. 0.195km).
-
-    let previousKm = 0;
-
-    const steps = splits.map((split, index) => {
-        const stepDistanceKm = split.km - previousKm;
-        const stepDistanceMeters = Math.round(stepDistanceKm * 1000);
-        previousKm = split.km;
-
-        // ID must be unique
-        const stepId = index + 2;
-
-        return `      <Step xsi:type="Step_t">
-        <StepId>${stepId}</StepId>
-        <Name>Km ${parseFloat(split.km.toFixed(2))}</Name>
-        <Duration xsi:type="Distance_t">
-          <Meters>${stepDistanceMeters}</Meters>
-        </Duration>
-        <Intensity>Active</Intensity>
-        <Target xsi:type="None_t"/>
-        <Notes>Target Pace: ${split.pace}/km</Notes>
-      </Step>`;
-    }).join('\n');
-
-    const footer = `    </Workout>
-  </Workouts>
-</TrainingCenterDatabase>`;
-
-    const tcxContent = `${header}\n${steps}\n${footer}`;
-
-    const blob = new Blob([tcxContent], { type: 'application/vnd.garmin.tcx+xml' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", "perfect_pace_workout.tcx");
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-
-    // Show donation modal after download
-    setShowDonation(true);
-  };
-
   return (
     <>
       <section className="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden no-print">
@@ -104,14 +40,6 @@ export default function PaceTable({ splits }) {
             Detailed Race Splits Preview
           </h3>
           <div className="flex items-center gap-4">
-              <button
-                  onClick={downloadTCX}
-                  className="flex items-center gap-2 text-xs font-bold text-secondary hover:text-pink-400 transition-colors bg-pink-50 dark:bg-pink-900/20 px-3 py-1.5 rounded-lg border border-pink-100 dark:border-pink-900"
-                  title="Download structured workout for Garmin/Coros"
-              >
-                  <span className="material-icons-round text-sm">watch</span>
-                  Export Workout (TCX)
-              </button>
               <button
                   onClick={downloadCSV}
                   className="flex items-center gap-2 text-xs font-medium text-primary hover:text-cyan-300 transition-colors"
