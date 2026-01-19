@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
+import DonationModal from './DonationModal';
 
 export default function Wristband({ splits }) {
+  const [showDonation, setShowDonation] = useState(false);
+
   if (!splits || splits.length === 0) return null;
 
   const totalDistance = splits[splits.length - 1].km;
@@ -67,6 +70,12 @@ export default function Wristband({ splits }) {
            return `${parseInt(parts[0])}:${parts[1]}`;
       }
       return timeStr;
+  };
+
+  const handlePrint = () => {
+    window.print();
+    // Show donation modal after user interacts with print dialog (or immediately, since we can't detect print completion easily)
+    setShowDonation(true);
   };
 
   return (
@@ -142,6 +151,8 @@ export default function Wristband({ splits }) {
           </div>
         </div>
       </div>
+
+      <DonationModal isOpen={showDonation} onClose={() => setShowDonation(false)} />
     </section>
   );
 }
