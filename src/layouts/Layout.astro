@@ -26,13 +26,46 @@ const { title, description, image } = Astro.props;
         <link rel="manifest" href="/perfect-pace/manifest.json" />
 
         <!-- Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-LMTDVWZGR4"></script>
         <script is:inline>
+            // Define dataLayer and the gtag function immediately so other components can use it safely
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+            // Make it globally available
+            window.gtag = gtag;
 
-            gtag('config', 'G-LMTDVWZGR4');
+            // Function to load the external GA script
+            function loadGoogleAnalytics() {
+                if (window.ga_loaded) return;
+                window.ga_loaded = true;
+
+                const script = document.createElement('script');
+                script.src = "https://www.googletagmanager.com/gtag/js?id=G-LMTDVWZGR4";
+                script.async = true;
+                document.head.appendChild(script);
+
+                gtag('js', new Date());
+                gtag('config', 'G-LMTDVWZGR4');
+            }
+
+            // Check for existing consent
+            try {
+                const cookieConsent = localStorage.getItem('cookie_consent');
+                if (cookieConsent) {
+                    const parsed = JSON.parse(cookieConsent);
+                    if (parsed.analytics) {
+                        loadGoogleAnalytics();
+                    }
+                }
+            } catch (e) {
+                console.error("Error parsing cookie consent", e);
+            }
+
+            // Listen for consent updates
+            window.addEventListener('cookie_consent_updated', (e) => {
+                if (e.detail && e.detail.analytics) {
+                    loadGoogleAnalytics();
+                }
+            });
 
             // Track PWA Installation
             window.addEventListener('appinstalled', () => {
