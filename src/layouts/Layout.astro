@@ -3,6 +3,7 @@ import "../assets/styles/app.css";
 import Footer from "../components/Footer.astro"
 import Navbar from "../components/Navbar.astro"
 import SEO from "../components/SEO.astro"
+import CookieBanner from "../components/CookieBanner.jsx"
 
 interface Props {
     title?: string;
@@ -87,5 +88,6 @@ const { title, description, image } = Astro.props;
                 }
             });
         </script>
+        <CookieBanner client:load />
 	</body>
 </html>
