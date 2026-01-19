@@ -83,7 +83,16 @@ export default function Wristband({ splits }) {
         </div>
         <button
           className="bg-secondary text-white hover:bg-pink-400 font-semibold py-2 px-6 rounded-lg shadow-lg shadow-pink-500/30 transition-all flex items-center gap-2"
-          onClick={() => window.print()}
+          onClick={() => {
+              if (window.gtag) {
+                  window.gtag('event', 'print_wristband', {
+                      'event_category': 'engagement',
+                      'event_label': 'print',
+                      'distance': totalDistance
+                  });
+              }
+              window.print();
+          }}
         >
           <span className="material-icons-round">print</span> Print Now
         </button>

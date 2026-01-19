@@ -4,6 +4,13 @@ export default function PaceTable({ splits }) {
   if (!splits || splits.length === 0) return null;
 
   const downloadCSV = () => {
+    if (window.gtag) {
+        window.gtag('event', 'export_csv', {
+            'event_category': 'engagement',
+            'event_label': 'export',
+            'distance': splits[splits.length - 1].km
+        });
+    }
     const headers = ["Km", "Pace /km", "Total Time", "Note"];
     const rows = splits.map((split) => {
         let note = "Steady";

@@ -43,6 +43,17 @@ export default function Selection({ onSubmit }) {
       distance: parseFloat(distance),
       speedFactor: parseFloat(speedFactor),
     };
+
+    if (window.gtag) {
+        window.gtag('event', 'recalculate_plan', {
+            'event_category': 'engagement',
+            'event_label': 'recalculate',
+            'distance': formData.distance,
+            'strategy': formData.strategy,
+            'target_time': formData.targetTime
+        });
+    }
+
     onSubmit(formData);
   };
 
