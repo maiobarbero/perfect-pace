@@ -35,19 +35,17 @@ export default function PaceTable({ splits }) {
   return (
     <>
       <section className="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden no-print">
-        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center flex-wrap gap-4">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
           <h3 className="font-bold text-slate-700 dark:text-slate-200">
             Detailed Race Splits Preview
           </h3>
-          <div className="flex items-center gap-4">
-              <button
-                  onClick={downloadCSV}
-                  className="flex items-center gap-2 text-xs font-medium text-primary hover:text-cyan-300 transition-colors"
-              >
-                  <span className="material-icons-round text-sm">download</span>
-                  Export to CSV
-              </button>
-          </div>
+          <button
+              onClick={downloadCSV}
+              className="flex items-center gap-2 text-xs font-medium text-primary hover:text-cyan-300 transition-colors"
+          >
+              <span className="material-icons-round text-sm">download</span>
+              Export to CSV
+          </button>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
