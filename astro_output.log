@@ -1,0 +1,27 @@
+
+> perfect-pace@0.0.1 dev
+> astro dev
+
+▶ Astro collects anonymous usage data.
+  This information helps us improve Astro.
+  Run "astro telemetry disable" to opt-out.
+  https://astro.build/telemetry
+
+07:34:27 [types] Generated 1ms
+07:34:27 [content] Syncing content
+07:34:27 [content] Synced content
+
+ astro  v5.7.13 ready in 630 ms
+
+┃ Local    http://localhost:4321/perfect-pace/
+┃ Network  use --host to expose
+
+07:34:27 watching for file changes...
+
+ update  ▶ New version of Astro available: 5.16.11
+  Run npx @astrojs/upgrade to update
+
+07:35:37 [200] / 218ms
+07:35:39 [200] / 12ms
+07:35:39 [200] / 6ms
+07:35:40 [200] /privacy-policy 6ms
