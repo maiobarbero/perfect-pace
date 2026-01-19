@@ -1,4 +1,4 @@
-const CACHE_NAME = 'perfect-pace-v1';
+const CACHE_NAME = 'perfect-pace-v202601191058';
 const ASSETS = [
   '/perfect-pace/',
   '/perfect-pace/index.html',
