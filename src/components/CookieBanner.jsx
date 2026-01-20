@@ -1,12 +1,33 @@
 import React, { useState, useEffect } from 'react';
 
+const COOKIE_CATEGORIES = [
+    {
+        id: 'necessary',
+        label: 'Necessary',
+        description: 'Theme preferences and basic functionality.',
+        required: true,
+        default: true,
+    },
+    {
+        id: 'analytics',
+        label: 'Analytics',
+        description: 'Help us improve the website by collecting anonymous usage data.',
+        required: false,
+        default: false,
+    }
+];
+
 export default function CookieBanner() {
     const [isVisible, setIsVisible] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
-    const [preferences, setPreferences] = useState({
-        necessary: true,
-        analytics: false,
-    });
+
+    // Initialize with defaults
+    const [preferences, setPreferences] = useState(() =>
+        COOKIE_CATEGORIES.reduce((acc, cat) => ({
+            ...acc,
+            [cat.id]: cat.default
+        }), {})
+    );
 
     useEffect(() => {
         const saved = localStorage.getItem('cookie_consent');
@@ -15,9 +36,17 @@ export default function CookieBanner() {
         } else {
             try {
                 const parsed = JSON.parse(saved);
-                setPreferences(parsed);
-                // Dispatch event for any listeners
-                window.dispatchEvent(new CustomEvent('cookie_consent_updated', { detail: parsed }));
+                // Merge parsed preferences with defaults to handle any new categories added later
+                const defaults = COOKIE_CATEGORIES.reduce((acc, cat) => ({
+                    ...acc,
+                    [cat.id]: cat.default
+                }), {});
+
+                const merged = { ...defaults, ...parsed };
+                setPreferences(merged);
+
+                // Dispatch event for any listeners with the current state
+                window.dispatchEvent(new CustomEvent('cookie_consent_updated', { detail: merged }));
             } catch (e) {
                 console.error("Error parsing cookie consent", e);
                 setIsVisible(true);
@@ -33,12 +62,18 @@ export default function CookieBanner() {
     };
 
     const handleAcceptAll = () => {
-        const all = { necessary: true, analytics: true };
+        const all = COOKIE_CATEGORIES.reduce((acc, cat) => ({
+            ...acc,
+            [cat.id]: true
+        }), {});
         savePreferences(all);
     };
 
     const handleRejectAll = () => {
-        const rejected = { necessary: true, analytics: false };
+        const rejected = COOKIE_CATEGORIES.reduce((acc, cat) => ({
+            ...acc,
+            [cat.id]: cat.required // Keep required true, set others to false (or their required state)
+        }), {});
         savePreferences(rejected);
     };
 
@@ -47,7 +82,9 @@ export default function CookieBanner() {
     };
 
     const togglePreference = (key) => {
-        if (key === 'necessary') return;
+        const category = COOKIE_CATEGORIES.find(c => c.id === key);
+        if (category && category.required) return;
+
         setPreferences(prev => ({ ...prev, [key]: !prev[key] }));
     };
 
@@ -71,33 +108,21 @@ export default function CookieBanner() {
                     </p>
 
                     <div className="space-y-4 mb-8">
-                        {/* Necessary */}
-                        <div className="flex items-center justify-between p-3 rounded bg-slate-50 dark:bg-slate-700/50">
-                            <div>
-                                <h3 className="font-semibold text-slate-800 dark:text-slate-200">Necessary</h3>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">Theme preferences and basic functionality.</p>
+                        {COOKIE_CATEGORIES.map((category) => (
+                            <div key={category.id} className="flex items-center justify-between p-3 rounded bg-slate-50 dark:bg-slate-700/50">
+                                <div>
+                                    <h3 className="font-semibold text-slate-800 dark:text-slate-200">{category.label}</h3>
+                                    <p className="text-xs text-slate-500 dark:text-slate-400">{category.description}</p>
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    checked={preferences[category.id]}
+                                    onChange={() => togglePreference(category.id)}
+                                    disabled={category.required}
+                                    className={`w-5 h-5 text-cyan-500 rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 ${category.required ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer focus:ring-cyan-500'}`}
+                                />
                             </div>
-                            <input
-                                type="checkbox"
-                                checked
-                                disabled
-                                className="w-5 h-5 text-cyan-500 rounded border-gray-300 dark:border-slate-600 dark:bg-slate-700 opacity-50 cursor-not-allowed"
-                            />
-                        </div>
-
-                        {/* Analytics */}
-                        <div className="flex items-center justify-between p-3 rounded bg-slate-50 dark:bg-slate-700/50">
-                            <div>
-                                <h3 className="font-semibold text-slate-800 dark:text-slate-200">Analytics</h3>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">Help us improve the website by collecting anonymous usage data.</p>
-                            </div>
-                            <input
-                                type="checkbox"
-                                checked={preferences.analytics}
-                                onChange={() => togglePreference('analytics')}
-                                className="w-5 h-5 text-cyan-500 rounded focus:ring-cyan-500 border-gray-300 dark:border-slate-600 dark:bg-slate-700 cursor-pointer"
-                            />
-                        </div>
+                        ))}
                     </div>
 
                     <div className="flex justify-end gap-3">
