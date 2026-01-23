@@ -55,21 +55,29 @@ export default function Wristband({ splits }) {
         }
     }
 
-    // Format time to show shorter version if needed (e.g. remove leading 00: if hours is 0? The HTML shows 0:21 so it keeps minutes)
-    // The split.totalTime is likely HH:MM:SS.
-    const formatTime = (timeStr) => {
-        if (!timeStr) return "";
+    // Format time to show shorter version if needed and determine unit
+    // Format time components
+    const getTimeComponents = (timeStr) => {
+        if (!timeStr) return null;
         const parts = timeStr.split(':');
         if (parts.length === 3) {
             // HH:MM:SS
             if (parts[0] === '00') {
-                return `${parts[1]}:${parts[2]}`; // MM:SS
+                return {
+                    main: parts[1],
+                    mainUnit: 'm',
+                    sub: parts[2],
+                    subUnit: 's'
+                }; // MM:SS
             }
-            return `${parseInt(parts[0])}:${parts[1]}`; // H:MM (ignoring seconds for space? HTML shows 1:30 for 21km, likely H:MM. But 5km shows 0:21 which is MM. 30km is 2:08. So likely H:MM or MM depending on duration)
-            // Actually, let's keep it simple.
-            return `${parseInt(parts[0])}:${parts[1]}`;
+            return {
+                main: parseInt(parts[0]).toString(),
+                mainUnit: 'h',
+                sub: parts[1],
+                subUnit: 'm'
+            }; // H:MM
         }
-        return timeStr;
+        return { main: timeStr, mainUnit: "", sub: "", subUnit: "" };
     };
 
     const handlePrint = () => {
@@ -148,7 +156,7 @@ export default function Wristband({ splits }) {
                     <div className="flex-grow grid grid-flow-col auto-cols-fr h-full">
                         {checkPoints.map((split, index) => {
                             const isFinish = index === checkPoints.length - 1;
-                            const time = formatTime(split.totalTime);
+                            const time = getTimeComponents(split.totalTime);
                             return (
                                 <div
                                     key={split.km}
@@ -157,9 +165,27 @@ export default function Wristband({ splits }) {
                                     <span className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-500 mb-1">
                                         {isFinish ? 'Finish' : `${parseFloat(split.km.toFixed(1))} km`}
                                     </span>
-                                    <span className="text-xl font-bold font-mono tracking-tight leading-none">
-                                        {time}
-                                    </span>
+                                    {time && time.main !== undefined ? (
+                                        <div className="flex items-baseline justify-center whitespace-nowrap">
+                                            <span className="text-xl font-bold font-mono tracking-tight leading-none">
+                                                {time.main}
+                                            </span>
+                                            <span className="text-[0.5rem] font-bold text-slate-500 ml-[1px] mr-[1px]">
+                                                {time.mainUnit}
+                                            </span>
+                                            <span className="text-xs font-bold text-slate-300 mx-[1px] relative -top-[1px]">:</span>
+                                            <span className="text-xl font-bold font-mono tracking-tight leading-none">
+                                                {time.sub}
+                                            </span>
+                                            <span className="text-[0.5rem] font-bold text-slate-500 ml-[1px]">
+                                                {time.subUnit}
+                                            </span>
+                                        </div>
+                                    ) : (
+                                        <span className="text-xl font-bold font-mono tracking-tight leading-none">
+                                            {split.totalTime}
+                                        </span>
+                                    )}
                                 </div>
                             );
                         })}
