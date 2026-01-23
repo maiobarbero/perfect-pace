@@ -51,6 +51,7 @@ export default function Planner() {
         raceData.distance,
         raceData.strategy,
         raceData.speedFactor || 1.02,
+        raceData.gpxSegments
       );
       setSplits(result);
       updateURLParams(raceData);
