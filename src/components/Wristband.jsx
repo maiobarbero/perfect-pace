@@ -122,7 +122,7 @@ export default function Wristband({ splits }) {
               <span className="text-black">PERFECT</span>
               <span className="text-black">PACE</span>
             </div>
-            <div className="text-[0.6rem] font-mono text-slate-500 mt-1">{totalDistance}KM</div>
+            <div className="text-[0.6rem] font-mono text-slate-500 mt-1">{totalDistance.toPrecision(4)}KM</div>
           </div>
 
           {/* Splits Grid */}
