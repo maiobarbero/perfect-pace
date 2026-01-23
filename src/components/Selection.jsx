@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { parseGPX, processGeoJSON } from "../lib/gpxUtils";
 
 function getRaceDataFromURL() {
   const params = new URLSearchParams(window.location.search);
@@ -25,6 +26,9 @@ export default function Selection({ onSubmit }) {
   const [speedFactor, setSpeedFactor] = useState(1.02);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
+  const [gpxSegments, setGpxSegments] = useState(null);
+  const [gpxFileName, setGpxFileName] = useState("");
+
   useEffect(() => {
     const dataFromURL = getRaceDataFromURL();
     if (dataFromURL) {
@@ -35,6 +39,31 @@ export default function Selection({ onSubmit }) {
     }
   }, []);
 
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setGpxFileName(file.name);
+
+    try {
+        const text = await file.text();
+        const geojson = parseGPX(text);
+        if (geojson) {
+            const { totalDistance, segments } = processGeoJSON(geojson);
+            // Update distance with precision
+            setDistance(totalDistance.toFixed(3));
+            setGpxSegments(segments);
+        } else {
+             alert("Could not parse GPX file.");
+        }
+    } catch (err) {
+        console.error(err);
+        alert("Error processing GPX file: " + err.message);
+        setGpxSegments(null);
+        setGpxFileName("");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
@@ -42,6 +71,7 @@ export default function Selection({ onSubmit }) {
       strategy,
       distance: parseFloat(distance),
       speedFactor: parseFloat(speedFactor),
+      gpxSegments: gpxSegments
     };
 
     if (window.gtag) {
@@ -50,7 +80,8 @@ export default function Selection({ onSubmit }) {
             'event_label': 'recalculate',
             'distance': formData.distance,
             'strategy': formData.strategy,
-            'target_time': formData.targetTime
+            'target_time': formData.targetTime,
+            'has_gpx': !!gpxSegments
         });
     }
 
@@ -76,11 +107,32 @@ export default function Selection({ onSubmit }) {
                 step="0.001"
                 className="w-full bg-slate-100 dark:bg-input-dark border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none font-mono placeholder-slate-400"
                 value={distance}
-                onChange={(e) => setDistance(e.target.value)}
+                onChange={(e) => {
+                    setDistance(e.target.value);
+                    // Clear GPX if user manually edits distance, to ensure consistency
+                    if (gpxSegments) {
+                        setGpxSegments(null);
+                        setGpxFileName("");
+                    }
+                }}
                 placeholder="42.195"
                 required
               />
             </div>
+             {/* File Upload Trigger */}
+             <div className="mt-2">
+                 <label htmlFor="gpx-upload" className="cursor-pointer flex items-center gap-2 text-xs text-slate-500 hover:text-primary transition-colors">
+                    <span className="material-icons-round text-sm">upload_file</span>
+                    {gpxFileName ? `Loaded: ${gpxFileName}` : "Upload GPX Trace (optional)"}
+                 </label>
+                 <input
+                    id="gpx-upload"
+                    type="file"
+                    accept=".gpx"
+                    className="hidden"
+                    onChange={handleFileChange}
+                 />
+             </div>
           </div>
 
           {/* Strategy */}
