@@ -18,8 +18,10 @@ export default function PaceTable({ splits }) {
     }
 
     const headers = ["Km", "Pace /km", "Total Time"];
-    if (hasElevation) headers.push("Elev. Gain");
-    headers.push("Note");
+    if (hasElevation) {
+        headers.push("Elev. Gain");
+        headers.push("Note");
+    }
 
     const rows = splits.map((split) => {
         const isCheckpoint = split.km % 5 === 0 || Math.abs(split.km - 21.0975) < 0.1 || Math.abs(split.km - 42.195) < 0.1;
@@ -74,17 +76,14 @@ export default function PaceTable({ splits }) {
                 <th className="px-6 py-3">Pace /km</th>
                 <th className="px-6 py-3">Total Time</th>
                 {hasElevation && <th className="px-6 py-3">Elev. Gain</th>}
-                <th className="px-6 py-3">Note</th>
+                {hasElevation && <th className="px-6 py-3">Note</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700 font-mono">
               {splits.map((split, index) => {
                   const isCheckpoint = split.km % 5 === 0 || Math.abs(split.km - 21.0975) < 0.1 || Math.abs(split.km - 42.195) < 0.1;
-                  const isWarmUp = index === 0; // Simple logic for demo
 
                   let note = split.note || "Steady";
-                  if (isCheckpoint) note = "Checkpoint" + (split.note ? ` (${split.note})` : "");
-                  else if (isWarmUp && !split.note) note = "Warm up";
 
                   // Highlight style for checkpoint
                   const rowClass = isCheckpoint
@@ -117,7 +116,9 @@ export default function PaceTable({ splits }) {
                             +{Math.round(split.elevation || 0)}m
                         </td>
                     )}
-                    <td className={noteClass}>{note}</td>
+                    { hasElevation && (
+                        <td className={noteClass}>{note}</td>
+                    )}
                   </tr>
                 );
               })}
