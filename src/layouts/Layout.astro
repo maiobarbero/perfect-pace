@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar.astro"
 import SEO from "../components/SEO.astro"
 import CookieBanner from "../components/CookieBanner.jsx"
 import ReloadPrompt from "../components/ReloadPrompt.jsx"
+import InstallPrompt from "../components/InstallPrompt.jsx"
 
 interface Props {
     title?: string;
@@ -112,5 +113,6 @@ const { title, description, image } = Astro.props;
         </script>
         <CookieBanner client:load />
         <ReloadPrompt client:load />
+        <InstallPrompt client:load />
 	</body>
 </html>
