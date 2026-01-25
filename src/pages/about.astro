@@ -1,0 +1,75 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const title = "About Perfect Pace - Advanced Race Strategy Planner";
+const description = "Learn how Perfect Pace uses GAP (Grade Adjusted Pace) and elevation data to create the perfect pacing strategy for your next race.";
+---
+
+<Layout title={title} description={description}>
+  <div class="prose dark:prose-invert max-w-3xl mx-auto pt-8">
+    <h1 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-6">
+      About Perfect Pace
+    </h1>
+
+    <p class="lead text-lg text-slate-600 dark:text-slate-300">
+      Perfect Pace is a specialized tool designed to help runners executing their race strategy with precision.
+      Unlike simple pace calculators, we take into account the <strong>elevation profile</strong> of your race
+      to calculate the <a href="https://fellrnr.com/wiki/Grade_Adjusted_Pace" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Grade Adjusted Pace (GAP)</a>.
+    </p>
+
+    <div class="my-8 p-6 bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+      <h3 className="text-xl font-bold mb-4">Why use Perfect Pace?</h3>
+      <ul class="space-y-2 list-disc list-inside text-slate-700 dark:text-slate-300">
+        <li><strong>Physics-based Pacing:</strong> Uses Minetti's energy cost equations to adjust pace for uphills and downhills.</li>
+        <li><strong>Smart Strategies:</strong> Choose between Constant Effort, Negative Split, or custom strategies like "The Crash" or "The Rise".</li>
+        <li><strong>Actionable Data:</strong> Export your plan to your Garmin/Coros via CSV or print a waterproof wristband.</li>
+        <li><strong>Privacy First:</strong> All processing happens in your browser. Your GPX files are never uploaded to a server.</li>
+      </ul>
+    </div>
+
+    <h2 class="text-2xl font-bold mt-8 mb-4">How to use it</h2>
+
+    <div class="space-y-6">
+      <div>
+        <h3 class="font-bold text-lg text-secondary">1. Define your Goal</h3>
+        <p>Set your target time and the total distance. Be realistic based on your current fitness.</p>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-lg text-secondary">2. Upload a GPX (Recommended)</h3>
+        <p>
+          Upload the route file (GPX) of your race. This allows the algorithm to detect hills and adjust the pace accordingly.
+          You'll run slower on uphills and faster on downhills while maintaining a constant physiological effort.
+        </p>
+      </div>
+
+      <div>
+        <h3 class="font-bold text-lg text-secondary">3. Choose a Strategy</h3>
+        <p>
+          <strong>Steady:</strong> Constant effort throughout the race.<br/>
+          <strong>Negative Split:</strong> Start conservative and speed up in the second half.<br/>
+          <strong>The Rise:</strong> A more aggressive negative split.<br/>
+          <strong>The Crash:</strong> Banking time early (risky!).
+        </p>
+      </div>
+    </div>
+
+    <hr class="my-10 border-slate-200 dark:border-slate-700" />
+
+    <div class="text-center space-y-6">
+      <h2 class="text-2xl font-bold">Support the Project</h2>
+      <p>
+        Perfect Pace is free and open source. If it helped you achieve a PR or qualify for Boston,
+        consider buying me a coffee to keep the servers running (and the developer caffeinated).
+      </p>
+
+      <a href="https://www.buymeacoffee.com/maiobarbero" target="_blank" rel="noopener noreferrer" class="inline-block transition-transform hover:-translate-y-1">
+        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="h-14 w-auto shadow-lg rounded-lg" />
+      </a>
+
+      <p class="text-sm text-slate-400 mt-4">
+        Developed by <a href="https://github.com/maio" target="_blank" class="hover:text-primary transition-colors">Maio</a>.
+      </p>
+    </div>
+  </div>
+</Layout>

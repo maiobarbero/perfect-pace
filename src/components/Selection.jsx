@@ -36,6 +36,22 @@ export default function Selection({ onSubmit }) {
       setStrategy(dataFromURL.strategy);
       setTargetTime(dataFromURL.targetTime);
       setSpeedFactor(dataFromURL.speedFactor || 1.02);
+
+      // Try to recover GPX from local storage
+      const storedGPX = localStorage.getItem('current_race_gpx');
+      if (storedGPX) {
+          try {
+              const parsed = JSON.parse(storedGPX);
+              // Only restore if the distance matches roughly (user might have changed distance in URL)
+              // allowing a small margin of error for floating point
+              if (Math.abs(parsed.totalDistance - dataFromURL.distance) < 0.1) {
+                  setGpxSegments(parsed.segments);
+                  setGpxFileName(parsed.fileName);
+              }
+          } catch (e) {
+              console.error("Failed to parse stored GPX", e);
+          }
+      }
     }
   }, []);
 
@@ -53,6 +69,17 @@ export default function Selection({ onSubmit }) {
             // Update distance with precision
             setDistance(totalDistance.toFixed(3));
             setGpxSegments(segments);
+
+            // Persist to local storage
+            try {
+                localStorage.setItem('current_race_gpx', JSON.stringify({
+                    fileName: file.name,
+                    totalDistance,
+                    segments
+                }));
+            } catch (e) {
+                console.error("Failed to save GPX to localStorage", e);
+            }
         } else {
              alert("Could not parse GPX file.");
         }
@@ -113,6 +140,7 @@ export default function Selection({ onSubmit }) {
                     if (gpxSegments) {
                         setGpxSegments(null);
                         setGpxFileName("");
+                        localStorage.removeItem('current_race_gpx');
                     }
                 }}
                 placeholder="42.195"

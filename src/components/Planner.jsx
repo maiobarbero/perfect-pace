@@ -4,6 +4,7 @@ import { calculateSplit } from "../lib/paceCalculator.js";
 import Selection from "../components/Selection.jsx";
 import Wristband from "../components/Wristband.jsx";
 import PaceTable from "../components/PaceTable.jsx";
+import RaceChart from "../components/RaceChart.jsx";
 
 function updateURLParams(data) {
   const params = new URLSearchParams();
@@ -23,11 +24,26 @@ function getRaceDataFromURL() {
   const speedFactor = params.get("speedFactor");
 
   if (targetTime && distance && strategy) {
+    let gpxSegments = null;
+    try {
+        const storedGPX = localStorage.getItem('current_race_gpx');
+        if (storedGPX) {
+            const parsed = JSON.parse(storedGPX);
+            // Match distance with small tolerance (100m)
+            if (Math.abs(parsed.totalDistance - parseFloat(distance)) < 0.1) {
+                gpxSegments = parsed.segments;
+            }
+        }
+    } catch (e) {
+        console.error("Failed to load GPX from storage", e);
+    }
+
     return {
       targetTime,
       distance: parseFloat(distance),
       strategy,
       speedFactor: parseFloat(speedFactor) || 1.02,
+      gpxSegments
     };
   }
   return null;
@@ -64,6 +80,7 @@ export default function Planner() {
 
       {splits.length > 0 && (
         <>
+          <RaceChart splits={splits} />
           <Wristband splits={splits} />
           <PaceTable splits={splits} />
         </>
